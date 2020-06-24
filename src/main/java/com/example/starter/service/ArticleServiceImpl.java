@@ -1,5 +1,8 @@
 package com.example.starter.service;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +23,13 @@ public class ArticleServiceImpl implements ArticleService {
 		
 	}
 	@Override
-	public void add(Map<String, Object> param) {
+	public long add(Map<String, Object> param) {
 		articleDao.add(param);
+		
+		BigInteger bigIntId = (BigInteger)param.get("id");
+		long newId = bigIntId.longValue();
+		
+		return newId;
 		
 	}
 }
