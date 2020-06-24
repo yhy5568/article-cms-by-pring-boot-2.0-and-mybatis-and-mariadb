@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.starter.dto.Article;
 import com.example.starter.service.ArticleService;
 
-import jline.internal.Log;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -21,11 +21,17 @@ public class ArticleController {
 	
 	
 	@RequestMapping("/article/list")
-	public String showList() {
+	public String showList(Model aModel) {
 		List<Article> list = articleService.getList();
 		
-		Log.info("list : " + list);
+		aModel.addAttribute("list", list);
 		
 		return "article/list";
+	}
+	
+	@RequestMapping("/article/add")
+	public String showAdd() {
+		
+		return "article/add";
 	}
 }
