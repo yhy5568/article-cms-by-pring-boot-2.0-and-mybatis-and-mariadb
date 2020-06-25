@@ -10,6 +10,8 @@ public class Article {
 	private String regDate;
 	private String title;
 	private String body;
+	private long hit;
+	
 	public long getId() {
 		return id;
 	}
@@ -33,6 +35,12 @@ public class Article {
 	}
 	public void setBody(String body) {
 		this.body = body;
+	}
+	public long getHit() {
+		return hit;
+	}
+	public void setHit(long hit) {
+		this.hit = hit;
 	}
 	
 }

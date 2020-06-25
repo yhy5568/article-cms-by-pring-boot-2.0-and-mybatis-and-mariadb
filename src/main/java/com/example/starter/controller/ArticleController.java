@@ -23,13 +23,51 @@ public class ArticleController {
 	ArticleService articleService;
 	
 	
+	@RequestMapping("/article/detail")
+	public String showDetail(Model model, long id) {
+		Article article = articleService.getOne(id); 
+		
+		articleService.hitUp(id);
+		
+		model.addAttribute("article", article);
+		
+		return "article/detail";
+	}
+	
+	@RequestMapping("/article/modify")
+	public String showModify(Model model, long id) {
+		Article article = articleService.getOne(id); 
+		
+		model.addAttribute("article", article);
+		
+		return "article/modify";
+	}
+	
+	@RequestMapping("/article/doModify")
+	@ResponseBody
+	public String doModify(@RequestParam Map<String, Object> param, long id) {
+		articleService.modify(param);
+		
+		String msg =  id + "번 게시물이 수정되었습니다";
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("alert('"+msg+"');");
+		sb.append("location.replace('./detail?id="+id+"');");
+		
+		sb.insert(0,"<script>");
+		sb.append("</script>");
+		
+		return sb.toString();
+	}
+	
 	@RequestMapping("/article/list")
-	public String showList(Model aModel) {
+	public String showList(Model model) {
 		List<Article> list = articleService.getList();
 		int totalCount = articleService.getTotalCount();
 		
-		aModel.addAttribute("list", list);
-		aModel.addAttribute("totalCount", totalCount);
+		model.addAttribute("list", list);
+		model.addAttribute("totalCount", totalCount);
 		
 		
 		return "article/list";
@@ -46,6 +84,34 @@ public class ArticleController {
 	public String doAdd(@RequestParam Map<String, Object> param) {
 		long newId = articleService.add(param);
 		
-		return newId + "번 게시물이 추가되었습니다";
+		String msg =  newId + "번 게시물이 추가되었습니다";
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("alert('"+msg+"');");
+		sb.append("location.replace('./detail?id="+newId+"');");
+		
+		sb.insert(0,"<script>");
+		sb.append("</script>");
+		
+		return sb.toString();
+	}
+	
+	@RequestMapping("/article/doDelete")
+	@ResponseBody
+	public String doDelete(long id) {
+		articleService.delete(id);
+		
+		String msg =  id + "번 게시물이 삭제되었습니다";
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("alert('"+msg+"');");
+		sb.append("location.replace('./list');");
+		
+		sb.insert(0,"<script>");
+		sb.append("</script>");
+		
+		return sb.toString();
 	}
 }

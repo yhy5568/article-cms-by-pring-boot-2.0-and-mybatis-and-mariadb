@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="pageName" value="게시물 추가" />
+<c:set var="pageName" value="게시물 수정" />
 <%@ include file="../part/head.jspf" %>
+	
 	<script>
-		function submitAddForm(form){
+		function submitModifyForm(form){
 			form.title.value = form.title.value.trim();
 			if(form.title.value.length == 0){
 				alert('제목을 입력해주세요');
@@ -22,13 +23,14 @@
 			
 		}
 	</script>
-	<form class="con common-form" action="./doAdd" method="POST" onsubmit="submitAddForm(this); return false;">
+	<form class="con common-form" action="./doModify" method="POST" onsubmit="submitModifyForm(this); return false;">
+		<input type="hidden" name="id" value="${article.id}">
 		<div>
 			<span>
 				제목
 			</span>
 			<div>
-				<input type="text" name="title" placeholder="제목" autofocus="autofocus">
+				<input type="text" name="title" placeholder="제목" autofocus="autofocus" value="${article.title}">
 				
 			</div>
 		</div>
@@ -38,19 +40,24 @@
 				내용
 			</span>
 			<div>
-				<textarea name="body" placeholder="내용"></textarea>
+				<textarea name="body" placeholder="내용">${article.body}</textarea>
 			</div>
 		</div>
 		
 		<div>
 			<span>
-				작성
+				수정
 			</span>
 			<div>
-				<input type="submit" value="작성">
+				<input type="submit" value="수정">
 				<input type="reset" value="취소" onclick="history.back();">
 			</div>
 		</div>
 	</form>
-</body>
-</html>
+	
+	<div class="btns con">
+		<a href="./list">게시물 리스트</a>
+		<a href="./add">게시물 추가</a>
+		<a onclick="if(confirm('삭제하시겠습니까?') == false) return false;" href="./doDelete?id=${article.id}">게시물 삭제</a>
+	</div>
+<%@ include file="../part/foot.jspf" %>
